@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f1e7" />
+    <title>智慧魚缸 Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23dbe4f4'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='sans-serif' font-size='26' font-weight='700' fill='%23101211'%3EAQ%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+    <header class="app-header">
+      <a class="wordmark" href="#overview" aria-label="智慧魚缸首頁">
+        <span class="wordmark-index">AQ / 16</span>
+        <span>智慧魚缸</span>
+      </a>
+      <nav class="primary-nav" aria-label="主要導覽">
+        <button class="nav-item is-active" type="button" data-route="overview">總覽</button>
+        <button class="nav-item" type="button" data-route="devices">設備</button>
+        <button class="nav-item" type="button" data-route="events">事件</button>
+        <button class="nav-item" type="button" data-route="admin">後台</button>
+      </nav>
+      <div class="header-actions">
+        <span class="connection-chip" data-connection-state><i></i><span>連線中</span></span>
+        <button class="text-action" type="button" data-theme-toggle>深色</button>
+        <button class="session-action" type="button" data-session-action>登入</button>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="view is-active" id="overview" data-view="overview">
+        <header class="page-intro">
+          <div>
+            <p class="eyebrow">主要魚缸 / 即時狀態</p>
+            <h1 data-health-title>等待魚缸資料。</h1>
+          </div>
+          <div class="intro-meta">
+            <span class="demo-label" data-data-state>即時資料</span>
+            <span>更新 <time data-updated-at>—</time></span>
+          </div>
+        </header>
+
+        <section class="system-hero" aria-labelledby="system-health-heading">
+          <div class="health-score" data-health-state="empty">
+            <strong data-health-score>—</strong>
+            <span>健康分數 / 100</span>
+          </div>
+          <div class="health-narrative">
+            <p class="section-number">01 / SYSTEM</p>
+            <h2 id="system-health-heading" data-health-summary>尚未收到感測資料</h2>
+            <p data-health-detail>完成裝置 API Key 設定後，ESP32 上傳的數值會顯示在這裡。</p>
+          </div>
+          <dl class="system-facts">
+            <div><dt>主控制器</dt><dd>LOCAL / SAFE</dd></div>
+            <div><dt>節點狀態</dt><dd data-node-count>0 / 0 在線</dd></div>
+            <div><dt>資料保留</dt><dd data-retention-summary>3 年</dd></div>
+          </dl>
+        </section>
+
+        <section class="metric-section" aria-labelledby="metrics-heading">
+          <div class="section-heading">
+            <div>
+              <p class="section-number">02 / TELEMETRY</p>
+              <h2 id="metrics-heading">目前數值</h2>
+            </div>
+            <div class="metric-section-actions">
+              <p>開啟卡片可查看歷史、預測與受保護控制。</p>
+              <button class="restore-cards" type="button" data-restore-cards hidden>顯示已隱藏圖卡 <strong>0</strong></button>
+            </div>
+          </div>
+          <div class="metrics-grid" data-metric-grid>
+            <div class="empty-state" data-metric-empty>
+              <strong>等待第一筆資料</strong>
+              <span>後台建立裝置 API Key，再由 ESP32 呼叫 telemetry API。</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-lower-grid">
+          <article class="chart-panel" aria-labelledby="trend-heading">
+            <div class="panel-heading">
+              <div>
+                <p class="section-number">03 / HISTORY + FORECAST</p>
+                <h2 id="trend-heading">歷史與預測</h2>
+              </div>
+              <div class="chart-controls">
+                <label>數據<select data-chart-metric><option value="">尚無數據</option></select></label>
+                <div class="time-range" aria-label="時間範圍">
+                  <button class="is-active" type="button" data-hours="24">24H</button>
+                  <button type="button" data-hours="168">7D</button>
+                  <button type="button" data-hours="720">30D</button>
+                </div>
+              </div>
+            </div>
+            <div class="chart-legend" aria-label="資料狀態圖例">
+              <span class="normal">正常</span><span class="warning">輕度異常</span>
+              <span class="danger">異常</span><span class="missing">缺失</span><span class="forecast">預測</span>
+            </div>
+            <div class="chart-wrap">
+              <canvas data-main-chart aria-label="感測歷史與預測折線圖"></canvas>
+              <div class="chart-empty" data-chart-empty>選擇有資料的感測項目</div>
+            </div>
+            <p class="chart-caption" data-forecast-caption>預測只提供趨勢參考，不會直接驅動控制輸出。</p>
+          </article>
+
+          <aside class="events-panel" aria-labelledby="events-overview-heading">
+            <div class="panel-heading compact">
+              <div>
+                <p class="section-number">04 / EVENTS</p>
+                <h2 id="events-overview-heading">事件紀錄</h2>
+              </div>
+              <button class="inline-link" type="button" data-route="events">查看全部</button>
+            </div>
+            <div class="event-list" data-dashboard-events></div>
+          </aside>
+        </section>
+      </section>
+
+      <section class="view" data-view="devices" hidden>
+        <header class="page-intro compact-intro">
+          <div><p class="eyebrow">裝置目錄 / 分析與控制</p><h1>每個節點，都有清楚界線。</h1></div>
+          <p>讀取與預測公開；控制、排程及設定需要 Operator 或 Admin。</p>
+        </header>
+        <div class="device-layout">
+          <section class="device-list-panel" aria-labelledby="device-list-heading">
+            <div class="section-heading"><div><p class="section-number">01 / NODES</p><h2 id="device-list-heading">IoT 設備</h2></div></div>
+            <div class="device-list" data-device-list></div>
+          </section>
+          <section class="device-detail-panel" data-device-detail>
+            <div class="empty-state"><strong>選擇一個設備</strong><span>查看即時值、歷史趨勢、預測與控制佇列。</span></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" data-view="events" hidden>
+        <header class="page-intro compact-intro">
+          <div><p class="eyebrow">已發生 + 預定</p><h1>讓每個動作都有紀錄。</h1></div>
+          <div class="event-filters" role="group" aria-label="事件篩選">
+            <button class="is-active" type="button" data-event-filter="all">全部</button>
+            <button type="button" data-event-filter="past">已發生</button>
+            <button type="button" data-event-filter="upcoming">預定</button>
+          </div>
+        </header>
+        <div class="full-event-list" data-full-events></div>
+      </section>
+
+      <section class="view" data-view="admin" hidden>
+        <header class="page-intro compact-intro admin-intro">
+          <div><p class="eyebrow">受保護區域</p><h1>系統後台。</h1></div>
+          <p data-admin-session>登入後可管理裝置、權限、資料保留、備份與通知整合。</p>
+        </header>
+        <div class="auth-gate" data-admin-gate>
+          <strong>後台需要登入</strong>
+          <span>Dashboard 保持公開；後台不會暴露 API Key 或控制功能。</span>
+          <button class="primary-button" type="button" data-open-login>登入後台</button>
+        </div>
+        <div class="admin-shell" data-admin-shell hidden>
+          <nav class="admin-tabs" aria-label="後台功能">
+            <button class="is-active" type="button" data-admin-tab="system">系統</button>
+            <button type="button" data-admin-tab="devices">設備與 Key</button>
+            <button type="button" data-admin-tab="users">權限</button>
+            <button type="button" data-admin-tab="alarms">警報 API</button>
+            <button type="button" data-admin-tab="audit">稽核</button>
+          </nav>
+
+          <section class="admin-panel is-active" data-admin-panel="system">
+            <div class="admin-grid">
+              <article class="admin-card">
+                <p class="section-number">DATABASE</p><h2>資料保存與空間</h2>
+                <dl class="stat-list" data-database-stats></dl>
+                <form data-settings-form>
+                  <label>原始資料保存天數 <input name="retention_days" type="number" min="90" max="1825" required /></label>
+                  <label>Dashboard 更新秒數 <input name="dashboard_refresh_seconds" type="number" min="5" max="300" required /></label>
+                  <label>裝置離線判定秒數 <input name="device_offline_seconds" type="number" min="30" max="86400" required /></label>
+                  <button class="primary-button" type="submit">儲存設定</button>
+                </form>
+              </article>
+              <article class="admin-card danger-zone">
+                <p class="section-number">MAINTENANCE</p><h2>備份與清理</h2>
+                <p>備份包含 SQLite、CSV、裝置與設定。清理只刪除超過保存期限的資料。</p>
+                <div class="button-row">
+                  <a class="secondary-button" href="/api/v1/manage/database/export" data-export-link>打包下載</a>
+                  <button class="danger-button" type="button" data-cleanup>執行清理</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="devices" hidden>
+            <div class="admin-grid">
+              <article class="admin-card"><p class="section-number">DEVICE</p><h2>設備設定</h2><div data-admin-devices></div></article>
+              <article class="admin-card"><p class="section-number">API KEY</p><h2>裝置認證</h2><p>API Key 只會完整顯示一次，遺失時請撤銷並重新建立。</p><div data-device-keys></div></article>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="users" hidden>
+            <div class="admin-grid">
+              <article class="admin-card"><p class="section-number">ACCOUNTS</p><h2>使用者與角色</h2><div data-user-list></div></article>
+              <article class="admin-card"><p class="section-number">NEW USER</p><h2>新增帳號</h2>
+                <form data-user-form>
+                  <label>帳號<input name="username" minlength="3" required /></label>
+                  <label>密碼<input name="password" type="password" minlength="10" required /></label>
+                  <label>角色<select name="role"><option value="viewer">Viewer</option><option value="operator">Operator</option><option value="admin">Admin</option></select></label>
+                  <button class="primary-button" type="submit">建立帳號</button>
+                </form>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="alarms" hidden>
+            <div class="admin-grid">
+              <article class="admin-card"><p class="section-number">OUTBOX API</p><h2>主動提醒擴充點</h2><p>LINE、WhatsApp 或其他通知程式可定期 claim 待處理警報，發送後回報結果；核心系統不綁定任何平台。</p><button class="secondary-button" type="button" data-claim-alarms>領取待處理警報</button><pre data-alarm-output>尚未領取</pre></article>
+              <article class="admin-card"><p class="section-number">TEST</p><h2>建立測試警報</h2>
+                <form data-alarm-form><label>標題<input name="title" required value="測試警報" /></label><label>訊息<textarea name="message" required>請確認通知轉接程式。</textarea></label><label>嚴重度<select name="severity"><option value="info">Info</option><option value="warning">Warning</option><option value="danger">Danger</option></select></label><button class="primary-button" type="submit">加入 outbox</button></form>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="audit" hidden>
+            <article class="admin-card wide"><p class="section-number">AUDIT LOG</p><h2>操作稽核</h2><div class="table-wrap"><table><thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>對象</th></tr></thead><tbody data-audit-list></tbody></table></div></article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="auth-dialog" data-auth-dialog>
+      <form data-login-form>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="關閉">CLOSE</button>
+        <p class="section-number">PROTECTED</p><h2>登入控制區域</h2>
+        <p>公開 Dashboard 不需要登入；控制、排程與後台需要授權。</p>
+        <label>帳號<input name="username" autocomplete="username" required /></label>
+        <label>密碼<input name="password" type="password" autocomplete="current-password" required /></label>
+        <p class="form-error" data-login-error hidden></p>
+        <button class="primary-button" type="submit">登入</button>
+      </form>
+    </dialog>
+
+    <dialog class="control-dialog" data-control-dialog>
+      <form data-control-form>
+        <button class="dialog-close" type="button" data-close-control aria-label="關閉">CLOSE</button>
+        <p class="section-number">REMOTE CONTROL</p><h2>建立控制命令</h2>
+        <input name="device_id" type="hidden" />
+        <label>命令<select name="command" required></select></label>
+        <label>參數 JSON<textarea name="parameters" spellcheck="false">{}</textarea></label>
+        <label>命令有效秒數<input name="expires_in_seconds" type="number" min="30" max="86400" value="300" required /></label>
+        <p>命令只會進入佇列。ESP32 必須先通過本機安全檢查，再決定是否執行。</p>
+        <button class="primary-button" type="submit">送出命令</button>
+      </form>
+    </dialog>
+
+    <div class="toast" data-toast hidden role="status" aria-live="polite"></div>
+    <footer class="app-footer"><span>Smart Aquarium Dashboard / CC BY 4.0</span><span>LOCAL SAFETY FIRST · PREDICTION ≠ CONTROL</span></footer>
+  </body>
+</html>

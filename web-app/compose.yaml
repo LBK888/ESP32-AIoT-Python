@@ -1,0 +1,32 @@
+services:
+  dashboard:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${AQUARIUM_PORT:-8000}:8000"
+    environment:
+      AQUARIUM_HOST: 0.0.0.0
+      AQUARIUM_PORT: 8000
+      AQUARIUM_DATA_DIR: /app/data
+      AQUARIUM_ADMIN_USER: ${AQUARIUM_ADMIN_USER:-admin}
+      AQUARIUM_ADMIN_PASSWORD: ${AQUARIUM_ADMIN_PASSWORD:?set AQUARIUM_ADMIN_PASSWORD in .env}
+      AQUARIUM_SESSION_HOURS: ${AQUARIUM_SESSION_HOURS:-12}
+      AQUARIUM_COOKIE_SECURE: ${AQUARIUM_COOKIE_SECURE:-false}
+      AQUARIUM_ALLOWED_ORIGINS: ${AQUARIUM_ALLOWED_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000}
+      AQUARIUM_MQTT_ENABLED: ${AQUARIUM_MQTT_ENABLED:-false}
+      AQUARIUM_MQTT_HOST: ${AQUARIUM_MQTT_HOST:-127.0.0.1}
+      AQUARIUM_MQTT_PORT: ${AQUARIUM_MQTT_PORT:-1883}
+      AQUARIUM_MQTT_USERNAME: ${AQUARIUM_MQTT_USERNAME:-}
+      AQUARIUM_MQTT_PASSWORD: ${AQUARIUM_MQTT_PASSWORD:-}
+    volumes:
+      - aquarium-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  aquarium-data:
+
